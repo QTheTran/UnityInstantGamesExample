@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Instant Tutorial</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>  
+    <script src="https://connect.facebook.net/en_us/fbinstant.6.3.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance;
+      FBInstant.initializeAsync().then(function() {
+        gameInstance = UnityLoader.instantiate("gameContainer", "Build/TestBuild.json", {onProgress: UnityProgress});
+      });
+
+      function LeaderboardRetrieveScore() {
+        console.log("Retrieving score");
+        FBInstant
+          .getLeaderboardAsync('TopScores')
+          .then(leaderboard => leaderboard.getEntriesAsync(10, 0))
+          .then(entries => {
+            console.log("Score retrieved");
+            if (entries.length > 0) {
+              gameInstance.SendMessage("Canvas", "LeaderboardScoreRetrieved",entries[0].getScore());
+              console.log(entries[0].getScore());
+            }
+          }).catch(error => console.error(error));
+        
+      }
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content" style="width: 100%; height: 100%">
+      <div id="gameContainer" style="width: 100%; height: 100%"></div>
+<!--       <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+        <div class="title">Instant Tutorial</div>
+      </div> -->
+    </div>
+  </body>
+</html>
