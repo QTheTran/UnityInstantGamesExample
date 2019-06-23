@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class FBScript : MonoBehaviour {
 
-    public GameObject startButton, endButton, scoreButtonGroup;
+    public GameObject menuGroup, endButton, scoreButtonGroup;
 
     public int incrementAmount = 1;
     public int score;
-    public Text scoreText, hiScoreText, updateScoreButtonText;
+    public Text scoreText, hiScoreText, updateScoreButtonText, adsButtonText;
     public static int hiScore;
 
 	// Use this for initialization
@@ -29,7 +29,7 @@ public class FBScript : MonoBehaviour {
     {
         endButton.SetActive(true);
         scoreButtonGroup.SetActive(true);
-        startButton.SetActive(false);
+        menuGroup.SetActive(false);
     }
 
     public void UpdateIncrement( Text textScore )
@@ -52,5 +52,27 @@ public class FBScript : MonoBehaviour {
     public void LeaderboardScoreAdded()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void AdButtonPressed()
+    {
+        if (adsButtonText.text == "Load Ad")
+        {
+            Application.ExternalCall("ReqRwd", "404917146766694_412746215983787");
+        }
+        else
+        {
+            Application.ExternalCall("ShowRwd", "404917146766694_412746215983787");
+        }
+    }
+
+    public void RWDLoaded()
+    {
+        adsButtonText.text = "Show Ad";
+    }
+
+    public void RWDshown()
+    {
+        adsButtonText.text = "Load Ad";
     }
 }
