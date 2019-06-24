@@ -10,67 +10,15 @@
     <script src="https://connect.facebook.net/en_us/fbinstant.6.3.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var preloadedRewardedVideo;
       var gameInstance;
       FBInstant.initializeAsync().then(function() {
         gameInstance = UnityLoader.instantiate("gameContainer", "Build/TestBuild.json", {onProgress: UnityProgress});
       });
-
-      function LeaderboardRetrieveScore() {
-        console.log("Retrieving score");
-        FBInstant
-          .getLeaderboardAsync('TopScores')
-          .then(leaderboard => leaderboard.getEntriesAsync(10, 0))
-          .then(entries => {
-            console.log("Score retrieved");
-            if (entries.length > 0) {
-              gameInstance.SendMessage("Canvas", "LeaderboardScoreRetrieved",entries[0].getScore());
-              console.log(entries[0].getScore());
-            }
-          }).catch(error => console.error(error));
-      }
-
-    function ReqRwd(idd)
-    {
-      preloadedRewardedVideo = null;
-      console.log("Req Rwd: " + idd);
-      FBInstant.getRewardedVideoAsync(
-          idd, // Your Ad Placement Id
-      ).then(function(rewarded) {
-          // Load the Ad asynchronously
-          preloadedRewardedVideo = rewarded;
-          return preloadedRewardedVideo.loadAsync();
-      }).then(function() {
-          console.log("Loaded Rwd: " + idd);
-          gameInstance.SendMessage('Canvas','RWDLoaded');
-      }).catch(function(err){
-          console.error('Rewarded video failed to preload: ' + err.message);
-      });
-    }
-
-    function ShowRwd(idd)
-    {
-      console.log("Show Rwd: " + idd);
-      preloadedRewardedVideo.showAsync()
-      .then(function() {
-          // Perform post-ad success operation
-          console.log("Showed Rwd: " + idd);
-          gameInstance.SendMessage('Canvas','RWDshown');      
-      })
-      .catch(function(e) {
-          console.error(e.message);
-      });
-    }
     </script>
   </head>
   <body>
     <div class="webgl-content" style="width: 100%; height: 100%">
       <div id="gameContainer" style="width: 100%; height: 100%"></div>
-<!--       <div class="footer">
-        <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-        <div class="title">Instant Tutorial</div>
-      </div> -->
     </div>
   </body>
 </html>

@@ -27,17 +27,3 @@ function UnityProgress(gameInstance, progress) {
     gameInstance.logo.style.display = gameInstance.progress.style.display = "none";
   }
 }
-
-function LeaderboardAddNewScore(score) {
-  FBInstant
-    .getLeaderboardAsync('TopScores')
-    .then(leaderboard => {
-      console.log('Saving score');
-      return leaderboard.setScoreAsync(score, FBInstant.player.getName());
-    })
-    .then(() => {
-      console.log('Score saved')
-      gameInstance.SendMessage("Canvas", "LeaderboardScoreAdded");
-    })
-    .catch(error => console.error(error));
-}
